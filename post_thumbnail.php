@@ -25,48 +25,63 @@ if ( ! function_exists( 'wc_get_gallery_image_html' ) ) {
 global $product;
 
 
-
 $image_attribtes = $product->get_attribute('images');
 if(!empty($image_attribtes)) {
 	$images = explode("|", $image_attribtes);
 
 	if ( count($images) ) {
-		$html = '<ol class="flex-control-nav flex-control-thumbs">';
+		array_shift($images);
 
-		$current = 1;
-		foreach ( $images as $image ) {
-			$html.= sprintf('<li><img onload="this.width = this.naturalWidth; this.height = this.naturalHeight" src="%s" draggable="false" width="100" height="100" class="%s"></li>', $image, $current == 1 ? 'flex-active': '');
-			$current++;
+		foreach($images as $image){
+			printf('<div
+				data-thumb="%s"
+				data-thumb-alt=""
+				class="woocommerce-product-gallery__image"
+			>
+				<a href="%s"
+				><img
+					width="600"
+					height="480"
+					src="%s"
+					class=""
+					alt=""
+					decoding="async"
+					loading="lazy"
+					title="10"
+					data-caption=""
+					data-src="%s"
+					data-large_image="%s"
+					data-large_image_width="684"
+					data-large_image_height="547"
+					srcset="
+					%s 600w,
+					%s 300w,
+					%s 768w, 
+					%s 960w
+					"
+					sizes="(max-width: 600px) 100vw, 600px"
+				/></a>
+			</div>',
+			
+			$image,
+			$image,
+			$image,
+			$image,
+			$image,
+			$image,
+			$image,
+			$image,
+			$image,
+			);
 		}
-
-
-		$html.= '</ol>';
-
-		echo $html;
-	
-	// printf('<ol class="flex-control-nav flex-control-thumbs">
-	// 		<li><img onload="this.width = this.naturalWidth; this.height = this.naturalHeight" src="http://localhost:8080/wp-content/uploads/2022/10/13-100x100.png" draggable="false" width="100" height="100" class="flex-active"></li>
-	// 		<li><img onload="this.width = this.naturalWidth; this.height = this.naturalHeight" src="http://localhost:8080/wp-content/uploads/2022/10/10-100x100.png" draggable="false" width="100" height="100" class=""></li>
-	// 		<li><img onload="this.width = this.naturalWidth; this.height = this.naturalHeight" src="http://localhost:8080/wp-content/uploads/2022/10/14-100x100.png" draggable="false" width="100" height="100" class=""></li>
-	// 		<li><img onload="this.width = this.naturalWidth; this.height = this.naturalHeight" src="http://localhost:8080/wp-content/uploads/2022/10/11-100x100.png" draggable="false" width="100" height="100" class=""></li>
-	// 		<li><img onload="this.width = this.naturalWidth; this.height = this.naturalHeight" src="http://localhost:8080/wp-content/uploads/2022/10/12-100x100.png" draggable="false" width="100" height="100"></li>
-	// 	</ol>'
 	}
-
 }else {
 	$attachment_ids = $product->get_gallery_image_ids();
 
 	if ( $attachment_ids && $product->get_image_id() ) {
-		$html = '';
 		foreach ( $attachment_ids as $attachment_id ) {
-			$html.=  apply_filters( 'woocommerce_single_product_image_thumbnail_html', wc_get_gallery_image_html( $attachment_id ), $attachment_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
-
-
+			echo  apply_filters( 'woocommerce_single_product_image_thumbnail_html', wc_get_gallery_image_html( $attachment_id ), $attachment_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
 		}
-		// var_dump($html);exit;
-
-		file_put_contents('gallery.txt', $html);
-		echo $html;
 	}
 
 }
