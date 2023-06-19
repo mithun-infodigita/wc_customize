@@ -1,4 +1,3 @@
-```php
 <?php
 /**
  * Single Product Image
@@ -96,7 +95,3 @@ if(!empty($images)) {
 
 <?php } ?>
 
-
-
-
-```
